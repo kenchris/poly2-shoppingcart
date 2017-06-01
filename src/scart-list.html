@@ -1,0 +1,95 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/iron-list/iron-list.html">
+
+<dom-module id="scart-list">
+  <template>
+    <style>
+      :host {
+        display: flex;
+        flex-direction: column;
+        min-height: calc(100vh - 64px);
+      }
+
+      paper-card {
+        margin: 24px;
+        width: calc(100% - 48px);
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        padding: 20px;
+      }
+
+      iron-list {
+        flex: 1;
+        overflow: hidden;
+      }
+
+      iron-list > * {
+        padding: 6px;
+      }
+    </style>
+
+    <paper-card id="shopping-list-card">
+      <h4 style="margin-top: 0;">Shopping list</h4>
+
+      <template is="dom-if" if="{{!datastore.length}}">
+        <div class="empty-message">Your shopping list is currently empty</div>
+      </template>
+      <iron-list id="list" items="[[datastore]]" as="item">
+        <template>
+          <paper-checkbox on-iron-change="onToggled">[[item]]</paper-checkbox>
+        </template>
+      </iron-list>
+    </paper-card>
+  </template>
+
+  <script>
+    class SCartList extends Polymer.Element {
+      static get is() { return 'scart-list'; }
+
+      static get properties() {
+        return {
+          datastore: {
+            type: Array,
+            value: _ => [],
+            notify: true,
+            reflectToAttribute: true
+          }
+        }
+      }
+      
+      connectedCallback (){
+        console.log(this.datastore);
+        super.connectedCallback();
+      }
+
+      onToggled(event) {
+        const index = event.model.index;
+        const elem = event.path[0];
+        if (!elem.hasAttribute('checked')) {
+          return;
+        }
+
+        setTimeout(_ => {
+          elem.removeAttribute('checked');
+          this.splice('datastore', index, 1);
+          this.notifyPath('datastore');
+        }, 300);
+      }
+    }
+
+    window.customElements.define(SCartList.is, SCartList);
+  </script>
+</dom-module>
