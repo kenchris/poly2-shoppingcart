@@ -94,7 +94,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <app-drawer id="drawer" slot="drawer">
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="overview" href="[[rootPath]]overview"><iron-icon icon="scart-icons:home"></iron-icon>Overview</a>
+          <a name="" href="[[rootPath]]"><iron-icon icon="scart-icons:home"></iron-icon>Overview</a>
           <a name="list" href="[[rootPath]]list"><iron-icon icon="scart-icons:cart"></iron-icon>Shopping list</a>
           <a name="config" href="[[rootPath]]config"><iron-icon icon="scart-icons:cart"></iron-icon>Configure tag...</a>
           <a name="about" href="[[rootPath]]about"><iron-icon icon="scart-icons:cart"></iron-icon>About...</a>
@@ -116,7 +116,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             attr-for-selected="name"
             fallback-selection="404"
             role="main">
-          <scart-overview name="overview" datastore="[[datastore]]"></scart-overview>
+          <scart-overview name="" datastore="[[datastore]]"></scart-overview>
           <scart-list name="list" datastore="[[datastore]]"></scart-list>
           <scart-404 name="404"></scart-404>
         </iron-pages>
@@ -178,18 +178,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
         const loadRegularPage = page => {
           this.page = page;
-          let resolvedPageUrl = this.resolveUrl('scart-' + this.page + '.html');
-          importElement(resolvedPageUrl).catch(_ => {
+          const fragment = (this.page != '') ? this.page : 'overview';
+          let resolvedPageUrl = this.resolveUrl(`scart-${fragment}.html`);
+          return importElement(resolvedPageUrl).catch(_ => {
             this.page = "404";
-            resolvedPageUrl = this.resolveUrl('scart-' + this.page + '.html');
+            resolvedPageUrl = this.resolveUrl('scart-404.html');
           });
         }
 
         switch (page) {
+          case '':
+          case 'list':
+            loadRegularPage(page);
+            break;
           case 'about': {
-            this.page = 'about';
-            const resolvedPageUrl = this.resolveUrl('scart-about.html');
-            importElement(resolvedPageUrl).then(_ => {
+            loadRegularPage(page).then(_ => {
               this.$.about.opened = true;
             });
             break;
@@ -197,7 +200,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           case 'config': {
             // This is just a dialog, so we always want something behind, even 
             // when loaded directly from the URL /config
-            const currPage = this.page ? this.page : 'overview';
+            const currPage = this.page || '';
             loadRegularPage(currPage);
 
             const resolvedPageUrl = this.resolveUrl('scart-config-dialog.html');
@@ -205,14 +208,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             // Change away from the URL /config only when dialog closes.
             listenOnce(this.$.config, 'iron-overlay-closed').then(_ => {
-              window.history.replaceState({}, null, currPage);
+              window.history.replaceState({}, null, `/${currPage}`);
               window.dispatchEvent(new CustomEvent('location-changed'));
             });
             this.$.config.opened = true;
             break;
           }
           default:
-            loadRegularPage(page);
+            loadRegularPage('404');
         }
 
         // Close a non-persistent drawer when the page & route are changed.

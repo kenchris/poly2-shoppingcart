@@ -48,7 +48,7 @@
     <app-header-layout has-scrolling-region fullbleed>
       <app-header fixed>
         <app-toolbar>
-          <a href="/overview">
+          <a href="/">
             <paper-icon-button class="fullscreen-only" icon="scart-icons:arrow-back" on-tap="close"></paper-icon-button>
           </a>
           <div main-title>Open source licenses</div>
@@ -86,7 +86,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
       set opened(value) {
         this.style.visibility = (value) ? "visible" : "hidden";
         if (!value) {
-          window.history.replaceState({}, null, '/overview');
+          window.history.replaceState({}, null, '/');
           window.dispatchEvent(new CustomEvent('location-changed'));
         }
       }
