@@ -1,0 +1,28 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="../bower_components/paper-dialog-behavior/paper-dialog-shared-styles.html">
+
+
+<dom-module id="scart-config-dialog">
+  <template>
+    <style>
+      :host {
+        width: 80vw;
+        height: 80vh;
+        padding: 16px;
+      }
+    </style>
+    <style include="paper-dialog-shared-styles"></style>
+    <slot></slot>
+    HI HI!
+  </template>
+
+  <script>
+    class SCartConfigDialog extends Polymer.mixinBehaviors([Polymer.PaperDialogBehavior], Polymer.Element) {
+      static get is() { return 'scart-config-dialog'; }
+    }
+
+    window.customElements.define(SCartConfigDialog.is, SCartConfigDialog);
+  </script>
+</dom-module>

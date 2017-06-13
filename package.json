@@ -1,6 +1,6 @@
 {
-  "name": "My Grocery Plan",
-  "license": "Apache 2",
+  "name": "my-grocery-plan",
+  "license": "Apache-2.0",
   "devDependencies": {
     "eslint": "^3.19.0",
     "eslint-config-google": "^0.7.0",
@@ -10,7 +10,8 @@
     "lint": "npm run lint:javascript && polymer lint",
     "lint:javascript": "eslint . --ext js,html --ignore-path .gitignore",
     "test": "polymer test",
-    "test:integration": "polymer build # test that psk builds without error with the CLI"
+    "test:integration": "polymer build # test that psk builds without error with the CLI",
+    "deploy": "polymer build && cp -r template/git build/.git && cp template/package.json build/"
   },
   "engines" : { "node" : ">=5" }
 }
