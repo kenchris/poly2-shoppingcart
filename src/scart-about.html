@@ -49,7 +49,7 @@
       <app-header fixed>
         <app-toolbar>
           <a href="/">
-            <paper-icon-button class="fullscreen-only" icon="scart-icons:arrow-back" on-tap="close"></paper-icon-button>
+            <paper-icon-button class="fullscreen-only" icon="scart-icons:arrow-back" on-tap="_close"></paper-icon-button>
           </a>
           <div main-title>Open source licenses</div>
         </app-toolbar>
@@ -79,16 +79,25 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
     class SCartAbout extends Polymer.Element {
       static get is() { return 'scart-about'; }
 
-      close() {
-        this.opened = false;
+      static get properties() {
+        return {
+          opened: {
+            type: Boolean,
+            notify: true,
+            observer: '_openedChanged',
+            reflectToAttribute: true
+          }
+        }
       }
 
-      set opened(value) {
-        this.style.visibility = (value) ? "visible" : "hidden";
-        if (!value) {
-          window.history.replaceState({}, null, '/');
-          window.dispatchEvent(new CustomEvent('location-changed'));
-        }
+      _close() {
+        this.opened = false;
+        window.history.replaceState({}, null, '/');
+        window.dispatchEvent(new CustomEvent('location-changed'));
+      }
+
+      _openedChanged(newValue) {
+        this.style.visibility = (newValue) ? "visible" : "hidden";
       }
     }
 

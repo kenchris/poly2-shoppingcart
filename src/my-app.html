@@ -95,7 +95,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-toolbar>Menu</app-toolbar>
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="" href="[[rootPath]]"><iron-icon icon="scart-icons:home"></iron-icon>Overview</a>
-          <a name="list" href="[[rootPath]]list"><iron-icon icon="scart-icons:cart"></iron-icon>Shopping list</a>
+          <a name="list" href="[[rootPath]]list"><iron-icon icon="scart-icons:cart"></iron-icon>Grocery plan</a>
           <a name="config" href="[[rootPath]]config"><iron-icon icon="scart-icons:cart"></iron-icon>Configure tag...</a>
           <a name="about" href="[[rootPath]]about"><iron-icon icon="scart-icons:cart"></iron-icon>About...</a>
         </iron-selector>
@@ -107,7 +107,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <app-header slot="header" condenses reveals effects="waterfall">
           <app-toolbar>
             <paper-icon-button icon="scart-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>Shopping Cart</div>
+            <div main-title>My Grocery Plan</div>
           </app-toolbar>
         </app-header>
 
@@ -127,7 +127,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <script>
     function importElement(url) {
       return new Promise((resolve, reject) => {
-        Polymer.importHref(url, resolve, reject, true)
+        Polymer.importHref(url, resolve, reject, true);
       });
     }
 
@@ -216,6 +216,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
           default:
             loadRegularPage('404');
+        }
+
+        if (page !== 'about' && this.$.about) {
+          this.$.about.opened = false;
+        }
+
+        if (page !== 'config' && this.$.config) {
+          this.$.config.opened = false;
         }
 
         // Close a non-persistent drawer when the page & route are changed.
