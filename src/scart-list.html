@@ -10,6 +10,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../bower_components/iron-list/iron-list.html">
 
@@ -39,8 +41,25 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       iron-list > * {
         padding: 6px;
       }
-    </style>
 
+      div {
+        margin: 24px;
+        display: flex;
+        flex-direction: row;
+      }
+
+      paper-icon-button {
+        align-self: center;
+      }
+
+      #input {
+        flex: 1;
+      }
+    </style>
+    <div>
+      <paper-input id="input" always-float-label label="Add an item (or tap NFC tag)"></paper-input>
+      <paper-icon-button id="btn" icon="scart-icons:send" title="Add" on-tap="add"></paper-icon-button>
+    </div>
     <paper-card id="shopping-list-card">
       <h4 style="margin-top: 0;">Shopping list</h4>
 
@@ -69,8 +88,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           }
         }
       }
-      
-      connectedCallback (){
+
+      constructor(...args) {
+        super(args);
+
+        navigator.nfc.watch(message => {
+          for (let record of message.data) {
+            console.log(record.data);
+            const name = record.data.name;
+            this.push('datastore', name);
+            this.$.list.dispatchEvent(new CustomEvent('iron-resize'));
+          }
+        }, { mode: "any", recordType: "json" });
+      }
+
+      add() {
+        this.push('datastore', this.$.input.value);
+        this.$.list.dispatchEvent(new CustomEvent('iron-resize'));
+      }
+
+      connectedCallback () {
         console.log(this.datastore);
         super.connectedCallback();
       }

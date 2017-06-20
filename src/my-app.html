@@ -96,8 +96,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
           <a name="" href="[[rootPath]]"><iron-icon icon="scart-icons:home"></iron-icon>Overview</a>
           <a name="list" href="[[rootPath]]list"><iron-icon icon="scart-icons:cart"></iron-icon>Grocery plan</a>
-          <a name="config" href="[[rootPath]]config"><iron-icon icon="scart-icons:cart"></iron-icon>Configure tag...</a>
-          <a name="about" href="[[rootPath]]about"><iron-icon icon="scart-icons:cart"></iron-icon>About...</a>
+          <a name="config" href="[[rootPath]]config"><iron-icon icon="scart-icons:nfc"></iron-icon>Configure tag...</a>
+          <a name="about" href="[[rootPath]]about"><iron-icon icon="scart-icons:info"></iron-icon>About...</a>
         </iron-selector>
       </app-drawer>
 
@@ -146,7 +146,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           rootPath: String,
           datastore: {
             type: Array,
-            value: _ => ["banana", "peer", "apple", "pineapple", "egg", "milk"],
+            value: _ => ["Banana"],
             notify: true,
             reflectToAttribute: true
           }
