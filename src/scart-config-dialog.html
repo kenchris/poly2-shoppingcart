@@ -30,6 +30,7 @@
         height: 100%;
         display: flex;
         flex-direction: column;
+        overflow: scroll;
       }
 
       .top {
@@ -38,7 +39,7 @@
       }
 
       img {
-        width: 100%;
+        min-width: 100%;
         object-fit: contain;
       }
 
@@ -47,6 +48,7 @@
         margin: 0px;
         border-radius: 0;
         width: 100%;
+        min-height: 40px;
       }
 
       .title {
@@ -108,6 +110,17 @@
       connectedCallback() {
         super.connectedCallback();
         this.addEventListener("opened-changed", () => { this.page = "start"; });
+
+        const onResize = _ => {
+          this.$.input.scrollIntoView();
+        };
+
+        if (ResizeObserver in window) {
+          let resizeObserver = new ResizeObserver(onResize);
+          resizeObserver.observe(this);
+        } else {
+          window.addEventListener('resize', onResize);
+        }
       }
 
       static get properties() {

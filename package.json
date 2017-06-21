@@ -11,7 +11,7 @@
     "lint:javascript": "eslint . --ext js,html --ignore-path .gitignore",
     "test": "polymer test",
     "test:integration": "polymer build # test that psk builds without error with the CLI",
-    "deploy": "polymer build && cp -r template/git build/.git && cp template/package.json build/ && cd build/ && git commit -a && git push -f --set-upstream origin master && cd -"
+    "deploy": "polymer build && cp -r template/git build/.git && cp template/package.json build/ && cd build/ && git add -A && git commit && git push -f --set-upstream origin master && cd -"
   },
   "engines" : { "node" : ">=5" }
 }
