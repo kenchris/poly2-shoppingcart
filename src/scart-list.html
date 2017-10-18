@@ -93,7 +93,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         super(args);
 
         navigator.nfc.watch(message => {
-          for (let record of message.data) {
+          for (let record of message.records) {
             console.log(record.data);
             const name = record.data.name;
             this.push('datastore', name);
